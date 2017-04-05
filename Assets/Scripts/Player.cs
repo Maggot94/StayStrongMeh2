@@ -1,7 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI; 
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 
 public class Player : MonoBehaviour {
@@ -161,7 +162,12 @@ public class Player : MonoBehaviour {
 		    life = life - 10; 
 		    vida.fillAmount -= 0.1f; 
 			Debug.Log (life);
-		//}
-	}
+        if (life == 0)
+        {
+            SceneManager.LoadScene("GameOver");
+        }
+
+        //}
+    }
 
 }
