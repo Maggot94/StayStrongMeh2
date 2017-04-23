@@ -17,8 +17,9 @@ public class Enemigo : MonoBehaviour {
 
 
 
-	public float TimeAttack = 3f; 
-	public float stay = 5f; 
+	private float TimeAttack=3f; 
+	[SerializeField]private float stay=7f; 
+	[SerializeField]private float maxStay=7f;
 
 	private BoxCollider2D attack; 
 	public bool rigth = false;
@@ -40,7 +41,8 @@ public class Enemigo : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-
+		//stay = 5f;
+		//TimeAttack = 3f;
 		Ataques = GetComponent<Animator> (); 
 		attack = GetComponent<BoxCollider2D> (); 
 	
@@ -67,7 +69,7 @@ public class Enemigo : MonoBehaviour {
 
 		if (TimeAttack <= 0) {
 			
-			stay = 5f; 
+			stay = maxStay; 
 			NextAttackBool = true; 
 		}
 			
@@ -122,6 +124,9 @@ public class Enemigo : MonoBehaviour {
 		}
 	}
 
+	public void ChangeStay(float newStay){
+		maxStay = newStay;
+	}
 }
 
 

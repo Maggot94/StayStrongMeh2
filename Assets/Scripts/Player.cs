@@ -158,7 +158,7 @@ public class Player : MonoBehaviour {
 	       
 		    //Dodge.SetInteger ("Dodge",3);
 		    //isDamage = true;
-		    cs.ShakeCamera (10f, 0.1f);
+		    cs.ShakeCamera (1f, 0.03f);
 		    life = life - 10; 
 		    vida.fillAmount -= 0.1f; 
 			Debug.Log (life);
