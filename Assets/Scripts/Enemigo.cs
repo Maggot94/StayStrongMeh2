@@ -30,12 +30,16 @@ public class Enemigo : MonoBehaviour {
 
 	public Vector3 mousePos ; 
 
+	[SerializeField]private float tiempoCambioSprite;
 
+	public GameObject Punos;
+	public int punos;
 	//----- parte roger---
 	void Awake (){
-
+		punos = 1;
 		life.fillAmount = 1f; 
 		vida = 100; 
+		Punos = GameObject.Find ("Punos");
 
 	}
 
@@ -43,6 +47,7 @@ public class Enemigo : MonoBehaviour {
 	void Start () {
 		//stay = 5f;
 		//TimeAttack = 3f;
+		tiempoCambioSprite=0.2f;
 		Ataques = GetComponent<Animator> (); 
 		attack = GetComponent<BoxCollider2D> (); 
 	
@@ -51,7 +56,13 @@ public class Enemigo : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+		if (GetComponent<SpriteRenderer> ().color == Color.red) {
+			tiempoCambioSprite -= Time.deltaTime;
+			if (tiempoCambioSprite <= 0) {
+				GetComponent<SpriteRenderer> ().color = Color.white;
+				tiempoCambioSprite = 0.2f;
+			}
+		}
 		if (NextAttackBool == false) {
 
 		
@@ -108,19 +119,26 @@ public class Enemigo : MonoBehaviour {
 
 	void OnMouseOver()
 	{
-		if(Input.GetMouseButtonDown(0))
-		{
-			vida = vida - 2;
-			life.fillAmount -= 0.02f; 
-			pow.SetActive (true);
+		if (!rigth && !left ) {
+			if (Input.GetMouseButtonDown (0)) {
+				if (punos == 1) {
+					punos = 2;
+				} else {
+					punos = 1;
+				}
+				vida = vida - 2;
+				life.fillAmount -= 0.02f; 
+				pow.SetActive (true);
+				Punos.GetComponent<Animator> ().SetInteger ("Tack", punos);
+				GetComponent<SpriteRenderer> ().color = Color.red;
 
-			//Debug.Log("vida - 1");
-		}
-		if (vida == 0)
-		{
-            NotificationCenter.DefaultCenter().PostNotification(this, "AnotherEnemy");
-            NotificationCenter.DefaultCenter().PostNotification(this, "SetCountText");
-			Destroy(gameObject);
+				//Debug.Log("vida - 1");
+			}
+			if (vida == 0) {
+				NotificationCenter.DefaultCenter ().PostNotification (this, "AnotherEnemy");
+				NotificationCenter.DefaultCenter ().PostNotification (this, "SetCountText");
+				Destroy (gameObject);
+			}
 		}
 	}
 

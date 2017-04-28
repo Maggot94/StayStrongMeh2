@@ -41,10 +41,12 @@ public class Player : MonoBehaviour {
 	public bool defrigth = false;
 	public bool defleft = false; 
 
-
+	[SerializeField]private float tiempoEntreDef;
+	[SerializeField]private bool castigo;
 	// Use this for initialization
 	void Start () {
-		
+		castigo = false;
+		tiempoEntreDef = 1;
 		Dodge = GetComponent<Animator>(); 
 		def= GetComponent<BoxCollider2D>(); 
 
@@ -82,32 +84,36 @@ public class Player : MonoBehaviour {
 
 			}
 		}
+		if (Dodge.GetInteger("Dodge")==0&&castigo) {
+			tiempoEntreDef -= Time.deltaTime;
+			if (tiempoEntreDef <= 0) {
+				castigo = false;
+				tiempoEntreDef = 1;
+			}
+		}
+		if (Dodge.GetInteger("Dodge")==0&&!castigo) {
+			if (Input.touchCount > 0) {
+				Touch touch = Input.GetTouch (0);
 
-		if (Input.touchCount > 0) 
-		{
-			Touch touch = Input.GetTouch (0);
+				if (touch.phase == TouchPhase.Began) {
+					startTime = Time.time;
+					starPos = touch.position; 
+				} else if (touch.phase == TouchPhase.Ended) {
+					endTime = Time.time;
+					endPos = touch.position;
 
-			if (touch.phase == TouchPhase.Began) 
-			{
-				startTime = Time.time;
-				starPos = touch.position; 
+					SwipeDistance = (endPos - starPos).magnitude;
+					SwipeTime = endTime - startTime;
+					if (SwipeTime < maxTime && SwipeDistance > minSwipeDist) {
+						Debug.Log ("Andres es gay");
+						Swipe ();
+						castigo = true;
+					}
+				}
 			}
 
-			else if (touch.phase == TouchPhase.Ended)
-			{
-				endTime = Time.time;
-				endPos = touch.position;
-
-				SwipeDistance = (endPos - starPos).magnitude;
-				SwipeTime = endTime - startTime;
-				if (SwipeTime < maxTime && SwipeDistance > minSwipeDist) {
-
-					Swipe ();
-
-				}
-	         }
-          }
-	   }
+		}
+	}
 
 	void Swipe ()
 	{
