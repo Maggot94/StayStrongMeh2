@@ -36,10 +36,10 @@ public class Enemigo : MonoBehaviour {
 	public int punos;
 	//----- parte roger---
 	void Awake (){
-		punos = 1;
+		punos = 4;
 		life.fillAmount = 1f; 
 		vida = 100; 
-		Punos = GameObject.Find ("Punos");
+		Punos = GameObject.Find ("Player");
 
 	}
 
@@ -121,15 +121,15 @@ public class Enemigo : MonoBehaviour {
 	{
 		if (!rigth && !left ) {
 			if (Input.GetMouseButtonDown (0)) {
-				if (punos == 1) {
-					punos = 2;
+				if (punos == 4) {
+					punos = 5;
 				} else {
-					punos = 1;
+					punos = 4;
 				}
 				vida = vida - 2;
 				life.fillAmount -= 0.02f; 
 				pow.SetActive (true);
-				Punos.GetComponent<Animator> ().SetInteger ("Tack", punos);
+				Punos.GetComponent<Animator> ().SetInteger ("Dodge", punos);
 				GetComponent<SpriteRenderer> ().color = Color.red;
 
 				//Debug.Log("vida - 1");
