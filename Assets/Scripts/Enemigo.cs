@@ -34,12 +34,14 @@ public class Enemigo : MonoBehaviour {
 
 	public GameObject Punos;
 	public int punos;
+	public bool nextGolpe;
 	//----- parte roger---
 	void Awake (){
 		punos = 4;
 		life.fillAmount = 1f; 
 		vida = 100; 
 		Punos = GameObject.Find ("Player");
+		nextGolpe = true;
 
 	}
 
@@ -71,7 +73,7 @@ public class Enemigo : MonoBehaviour {
 		}
 		if (stay <= 3f) {
 			
-			Ataques.SetInteger ("Attack", 0); 
+			//Ataques.SetInteger ("Attack", 0); 
 			TimeAttack -= Time.deltaTime; 
 			//attack.enabled = false; 
 			left = false;
@@ -89,7 +91,19 @@ public class Enemigo : MonoBehaviour {
 			StateAttack = Random.Range (0, 3);
 			Attack (StateAttack); 
 		}
-		
+		if ((Punos.GetComponent<Animator> ().GetCurrentAnimatorStateInfo(0).IsName("AtaqueDerecha")||(Punos.GetComponent<Animator> ().GetCurrentAnimatorStateInfo(0).IsName("AtaqueIzquierda")))&&!nextGolpe)
+		{
+			nextGolpe = true;
+			GetComponent<SpriteRenderer> ().color = Color.red;
+			Punos.GetComponent<Animator> ().SetInteger ("Dodge", 0);
+			vida = vida - 2;
+			life.fillAmount -= 0.02f; 
+			if (punos == 4) {
+				punos = 5;
+			} else {
+				punos = 4;
+			}
+		}
 	}
 
 	public void Attack (int a) {
@@ -97,7 +111,7 @@ public class Enemigo : MonoBehaviour {
 		if (a == 1) 
 		{
 
-			Ataques.SetInteger ("Attack", a); 
+			//Ataques.SetInteger ("Attack", a); 
 			//attack.enabled = true;
 			left = true; 
 			NextAttackBool = false; 
@@ -107,7 +121,7 @@ public class Enemigo : MonoBehaviour {
 
 		if (a == 2) 
 		{
-			Ataques.SetInteger ("Attack", a); 
+			//Ataques.SetInteger ("Attack", a); 
 			//attack.enabled = true; 
 			rigth = true; 
 			NextAttackBool = false; 
@@ -119,19 +133,12 @@ public class Enemigo : MonoBehaviour {
 
 	void OnMouseOver()
 	{
-		if (!rigth && !left ) {
+		if (!rigth && !left && nextGolpe ) {
 			if (Input.GetMouseButtonDown (0)) {
-				if (punos == 4) {
-					punos = 5;
-				} else {
-					punos = 4;
-				}
-				vida = vida - 2;
-				life.fillAmount -= 0.02f; 
+				
 				pow.SetActive (true);
 				Punos.GetComponent<Animator> ().SetInteger ("Dodge", punos);
-				GetComponent<SpriteRenderer> ().color = Color.red;
-
+				nextGolpe = false;
 				//Debug.Log("vida - 1");
 			}
 			if (vida == 0) {

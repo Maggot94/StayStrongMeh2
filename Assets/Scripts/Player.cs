@@ -46,7 +46,7 @@ public class Player : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		castigo = false;
-		tiempoEntreDef = 1;
+		tiempoEntreDef = 0;
 		Dodge = GetComponent<Animator>(); 
 		def= GetComponent<BoxCollider2D>(); 
 
